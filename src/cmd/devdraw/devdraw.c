@@ -28,6 +28,7 @@ draw_initdisplaymemimage(Client *c, Memimage *m)
 	c->slot = 0;
 	c->clientid = 1;
 	c->op = SoverD;
+	c->displaydpi = 200;
 }
 
 // gfx_replacescreenimage replaces c's screen image with m.
