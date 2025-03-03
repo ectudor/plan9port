@@ -1269,6 +1269,8 @@ _xtoplan9kbd(XEvent *e)
 	/* Do control mapping ourselves if translator doesn't */
 	if(e->xkey.state&ControlMask)
 		k &= 0x9f;
+	if((e->xkey.state&Mod4Mask) && ' ' <= k && k <= '~')
+		k += Kcmd;
 	if(k == NoSymbol) {
 		return -1;
 	}

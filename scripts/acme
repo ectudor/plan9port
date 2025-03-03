@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+PLAN9=$HOME/.local/plan9
+
+export SHELL="/bin/bash"
+export acmeshell="/bin/bash"
+export tabstop=4
+export TERM=dumb
+export PAGER=cat
+export BROWSER=xdg-open
+
+export NODE_NO_READLINE=1
+
+if [ "$(pgrep -x plumber)" ]; then
+	echo plumber is running
+else
+	echo starting plumber
+	$PLAN9/bin/9 plumber
+	cat "$PLAN9/plumbing" "$PLAN9/plumb/basic" | $PLAN9/bin/9 9p write plumb/rules
+fi
+
+$PLAN9/bin/9 acme -af /mnt/font/LiberationMono/13a/font $@ &
