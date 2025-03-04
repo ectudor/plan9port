@@ -213,6 +213,7 @@ threadmain(int argc, char *argv[])
 		fprint(2, "acme: can't initialize mouse: %r\n");
 		threadexitsall("mouse");
 	}
+	setcursor(mousectl, nil);
 	mouse = &mousectl->m;
 	keyboardctl = initkeyboard(nil);
 	if(keyboardctl == nil){
