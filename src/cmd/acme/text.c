@@ -12,6 +12,7 @@
 #include <complete.h>
 #include "dat.h"
 #include "fns.h"
+#include <stdio.h>
 
 Image	*tagcols[NCOL];
 Image	*textcols[NCOL];
@@ -760,6 +761,7 @@ texttype(Text *t, Rune r)
 			q0++;
 		textshow(t, q0, q0, TRUE);
 		return;
+	case 0x03: // C-c
 	case Kcmd+'c':	/* %C: copy */
 		typecommit(t);
 		cut(t, t, nil, TRUE, FALSE, nil, 0);
@@ -771,6 +773,14 @@ texttype(Text *t, Rune r)
 	case Kcmd+'Z':	/* %-shift-Z: redo */
 	 	typecommit(t);
 		undo(t, nil, nil, FALSE, 0, nil, 0);
+		return;
+	case 0x13: // C-s: save window
+		// good combination with -b flag
+		wincommit(t->w, &t->w->body);
+		put(&t->w->body, nil, nil, XXX, XXX, nil, 0);
+		return;
+	case 0x12: // C-s: get window
+		get(&t->w->body, nil, nil, FALSE, XXX, nil, 0);
 		return;
 
 	Tagdown:
@@ -796,6 +806,7 @@ texttype(Text *t, Rune r)
 	}
 	/* cut/paste must be done after the seq++/filemark */
 	switch(r){
+	case 0x18: /* C-x * /
 	case Kcmd+'x':	/* %X: cut */
 		typecommit(t);
 		if(t->what == Body){
@@ -806,6 +817,7 @@ texttype(Text *t, Rune r)
 		textshow(t, t->q0, t->q0, 1);
 		t->iq1 = t->q0;
 		return;
+	case 0x16: // C-v
 	case Kcmd+'v':	/* %V: paste */
 		typecommit(t);
 		if(t->what == Body){

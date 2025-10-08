@@ -12,6 +12,7 @@
 #include <thread.h>
 #include "x11-memdraw.h"
 #include "devdraw.h"
+#include "bigarrow.h"
 
 #undef time
 
@@ -502,7 +503,6 @@ runxevent(XEvent *xev)
 		 * so clear out the keyboard state when we lose the focus.
 		 */
 		_x.kstate = 0;
-		_x.kbuttons = 0;
 		_x.altdown = 0;
 		gfx_abortcompose(w->client);
 		break;
@@ -1276,18 +1276,10 @@ _xtoplan9kbd(XEvent *e)
 	return k+0;
 }
 
-int
-_xtoplan9buttons(unsigned int b)
-{
-	if(b == 0){
-		return 0;
-	}
-	return 1<<(b-1);
-}
-
 static int
 _xtoplan9mouse(Xwin *w, XEvent *e, Mouse *m)
 {
+	int s;
 	XButtonEvent *be;
 	XMotionEvent *me;
 
@@ -1316,18 +1308,54 @@ _xtoplan9mouse(Xwin *w, XEvent *e, Mouse *m)
 		/* BUG? on mac need to inherit these from elsewhere? */
 		m->xy.x = be->x;
 		m->xy.y = be->y;
+		s = be->state;
 		m->msec = be->time;
-		m->buttons |= _xtoplan9buttons(be->button);
+		switch(be->button){
+		case 1:
+			s |= Button1Mask;
+			break;
+		case 2:
+			s |= Button2Mask;
+			break;
+		case 3:
+			s |= Button3Mask;
+			break;
+		case 4:
+			s |= Button4Mask;
+			break;
+		case 5:
+			s |= Button5Mask;
+			break;
+		}
 		break;
 	case ButtonRelease:
 		be = (XButtonEvent*)e;
 		m->xy.x = be->x;
 		m->xy.y = be->y;
+		s = be->state;
 		m->msec = be->time;
-		m->buttons &= ~_xtoplan9buttons(be->button);
+		switch(be->button){
+		case 1:
+			s &= ~Button1Mask;
+			break;
+		case 2:
+			s &= ~Button2Mask;
+			break;
+		case 3:
+			s &= ~Button3Mask;
+			break;
+		case 4:
+			s &= ~Button4Mask;
+			break;
+		case 5:
+			s &= ~Button5Mask;
+			break;
+		}
+		break;
 
 	case MotionNotify:
 		me = (XMotionEvent*)e;
+		s = me->state;
 		m->xy.x = me->x;
 		m->xy.y = me->y;
 		m->msec = me->time;
@@ -1336,6 +1364,18 @@ _xtoplan9mouse(Xwin *w, XEvent *e, Mouse *m)
 	default:
 		return -1;
 	}
+
+	m->buttons = 0;
+	if(s & Button1Mask)
+		m->buttons |= 1;
+	if(s & Button2Mask)
+		m->buttons |= 2;
+	if(s & Button3Mask)
+		m->buttons |= 4;
+	if(s & Button4Mask)
+		m->buttons |= 8;
+	if(s & Button5Mask)
+		m->buttons |= 16;
 	return 0;
 }
 
@@ -1387,11 +1427,14 @@ rpc_setcursor(Client *client, Cursor *c, Cursor2 *c2)
 	XCursor xc;
 	Pixmap xsrc, xmask;
 	int i;
-	uchar src[2*16], mask[2*16];
+	//uchar src[2*16], mask[2*16];
+	uchar src[4*32], mask[4*32];
 
-	USED(c2);
+	//USED(c2);
+	USED(c);
 
 	xlock();
+/*
 	if(c == nil){
 		xcursorarrow(w);
 		xunlock();
@@ -1401,12 +1444,25 @@ rpc_setcursor(Client *client, Cursor *c, Cursor2 *c2)
 		src[i] = revbyte(c->set[i]);
 		mask[i] = revbyte(c->set[i] | c->clr[i]);
 	}
+*/
+	if (c2 == nil) {
+		c2 = &bigarrow2;
+	}
+	for(i=0; i<4*32; i++){
+		src[i] = revbyte(c2->set[i]);
+		mask[i] = revbyte(c2->set[i] | c2->clr[i]);
+	}
 
 	fg = _x.map[0];
 	bg = _x.map[255];
+/*
 	xsrc = XCreateBitmapFromData(_x.display, w->drawable, (char*)src, 16, 16);
 	xmask = XCreateBitmapFromData(_x.display, w->drawable, (char*)mask, 16, 16);
 	xc = XCreatePixmapCursor(_x.display, xsrc, xmask, &fg, &bg, -c->offset.x, -c->offset.y);
+*/
+	xsrc = XCreateBitmapFromData(_x.display, w->drawable, (char*)src, 32, 32);
+	xmask = XCreateBitmapFromData(_x.display, w->drawable, (char*)mask, 32, 32);
+	xc = XCreatePixmapCursor(_x.display, xsrc, xmask, &fg, &bg, -c2->offset.x, -c2->offset.y);
 	if(xc != 0) {
 		XDefineCursor(_x.display, w->drawable, xc);
 		if(_x.cursor != 0)

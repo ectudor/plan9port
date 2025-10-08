@@ -528,10 +528,12 @@ winsettag1(Window *w)
 		k = r-old+1;
 	else{
 		k = w->tag.file->b.nc;
+#if 0
 		if(w->body.file->seq == 0){
 			runemove(new+i, Llook, 6);
 			i += 6;
 		}
+#endif
 	}
 	new[i] = 0;
 
