@@ -1,3 +1,4 @@
+
 This is a port of many Plan 9 libraries and programs to Unix.
 
 Installation
@@ -8,6 +9,9 @@ run the rest of the installation.
 
 For more details, see install(1), at install.txt in this directory
 and at https://9fans.github.io/plan9port/man/man1/install.html.
+
+This fork modification
+./INSTALL will just symlink to /usr/local/plan9 and add a .desktop file to acme
 
 Documentation
 -------------
