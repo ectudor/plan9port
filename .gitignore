@@ -296,3 +296,10 @@ state.journal
 state.old
 unix/*.tgz
 y.tab.[ch]
+
+
+langs/**
+!langs/.gitkeep
+!langs/install_langs
+bin/go
+bin/gofmt

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+if [[ -z $PLAN9 ]]; then
+	echo "Execute in a PLAN9 environment"
+else
+	# TODO: Actually download go instead
+	LANG_DIR_GO=$PLAN9/langs/go
+	if [ -d $LANG_DIR_GO ]; then
+		ln -sfn $LANG_DIR_GO/bin/go $PLAN9/bin/go
+		ln -sfn $LANG_DIR_GO/bin/gofmt $PLAN9/bin/gofmt
+		go env -w GOPATH=$HOME/.cache/go
+	fi
+fi
+
