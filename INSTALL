@@ -2,6 +2,7 @@
 
 dobuild=true
 doinstall=true
+plan9source=$(pwd)
 
 case "x$1" in
 x)
@@ -173,43 +174,12 @@ if $dobuild; then
 fi
 
 if $doinstall; then
-	if [ ! -x $PLAN9/bin/cleanname -o ! -x $PLAN9/bin/sam ]; then
-		# Cleanname and sam are needed for moveplan9.sh and the man updates.
-		if [ ! -x $PLAN9/bin/cleanname ]; then
-			echo " "
-			echo "* Installation failed: $PLAN9/bin/cleanname does not exist."
-			exit 1
-		fi
-		if [ ! -x $PLAN9/bin/sam ]; then
-			echo " "
-			echo "* Installation failed: $PLAN9/bin/sam does not exist."
-			exit 1
-		fi
-		echo "* NOT renaming hard-coded /usr/local/plan9 paths."
-		echo "* NOT building web manual."
-	else
-		echo "* Renaming hard-coded /usr/local/plan9 paths..."
-		cd $PLAN9
-		sh lib/moveplan9.sh
-		echo "* Building web manual..."
-		(
-			cd $PLAN9/dist
-			echo cd `pwd`';' mk man
-			mk man
-		)
-	fi
+	# Simpler Installation
+	# just symlink to /usr/local/plan9
+	# symlink Desktop file in user
+	sudo ln -sfn $plan9source /usr/local/plan9
+	ln -sfn $plan9source/dist/Acme.desktop $HOME/.local/share/applications/Acme.desktop
 
-	if [ -x LOCAL.INSTALL ]; then
-		echo "* Running local modifications..."
-		echo cd `pwd`';' ./LOCAL.INSTALL
-		./LOCAL.INSTALL
-	fi
-
-	echo "* Done. "
-	echo "	"
-	echo "* Add these to your profile environment."
-	echo "	PLAN9=$PLAN9 export PLAN9"
-	echo '	PATH=$PATH:$PLAN9/bin export PATH'
 fi
 ) 2>&1 | tee install.log | $awk -f $PLAN9/dist/isum.awk -v 'copy='install.sum
 

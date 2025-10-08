@@ -1,0 +1,15 @@
+[Desktop Entry]
+Comment=Acme from plan9
+Exec=/usr/local/plan9/runscripts/acme
+GenericName=Acme from Plan9
+Icon=/usr/local/plan9/mac/spaceglenda.png
+Name=Acme
+NoDisplay=false
+Path=
+PrefersNonDefaultGPU=false
+StartupNotify=false
+Terminal=false
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=
