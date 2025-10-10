@@ -779,7 +779,8 @@ texttype(Text *t, Rune r)
 		wincommit(t->w, &t->w->body);
 		put(&t->w->body, nil, nil, XXX, XXX, nil, 0);
 		return;
-	case 0x12: // C-s: get window
+	case 0x12: // C-r: get window
+		wincommit(t->w, &t->w->body);
 		get(&t->w->body, nil, nil, FALSE, XXX, nil, 0);
 		return;
 
