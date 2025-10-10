@@ -1,0 +1,23 @@
+#!/usr/local/plan9/bin/rc
+
+# Only for +Error windows just to be safe
+
+err=`{realpath `{dirname $%}}/+Errors if (~ $% $err) {
+	echo -n ',' | 9p write acme/$winid/addr
+	echo -n 'dot=addr' | 9p write acme/$winid/ctl
+	echo -n '' | 9p write acme/$winid/data
+	exit
+}
+
+echo '!!!Do not use Clear on non +Errors window!!!!'
+exit 1
+
+
+
+
+
+
+
+
+
+
