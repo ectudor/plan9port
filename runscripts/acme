@@ -1,28 +1,22 @@
-#!/usr/local/plan9/bin/rc
+#!/usr/bin/env bash
 
-PLAN9=/usr/local/plan9
-SHELL=$PLAN9/bin/rc
-acmeshell=$PLAN9/bin/rc
-tabstop=4
-TERM=dumb
-PAGER=cat
-BROWSER=xdg-open
-font=/mnt/font/GoMono/11a/font
+export PLAN9=/usr/local/plan9
+export SHELL=/bin/bash
+export acmeshell=$SHELL
+export tabstop=4
+export TERM=dumb
+export PAGER=cat
+export BROWSER=xdg-open
+export font=/mnt/font/GoMono/11a/font
+export PATH="$PATH:$PLAN9/usrbin:$PLAN9/bin"
 
-opath=$path i=() {
-	path=()
-	for (i in $opath) {
-		if (! ~ $i $PLAN9/bin) {
-			path=($path $i)
-		}
-	}
-	path=($PLAN9/usrbin $path $PLAN9/bin)
-}
-
-if (! pid=`{pgrep -x plumber} ~ $#pid 1) {
+if [ "$(pgrep -x plumber)"  ];  then
+	echo "Plumber is already running"
+else
 	$PLAN9/bin/plumber
-	cat $PLAN9/plumbing | $PLAN9/bin/9 9p write plumb/rule
-}
+	cat "$PLAN9/plumb/basic" | $PLAN9/bin/9 9p write plumb/rules
+fi
 
-$PLAN9/bin/acme -c 2 -abf $font $* &
+
+$PLAN9/bin/acme -abf $font &
 
