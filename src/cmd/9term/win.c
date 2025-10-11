@@ -213,6 +213,8 @@ threadmain(int argc, char **argv)
 	fswrite(ctlfd, buf, strlen(buf));
 	sprint(buf, "dump %s\n", dump);
 	fswrite(ctlfd, buf, strlen(buf));
+	sprint(buf, "scratchwindow\n");
+	fswrite(ctlfd, buf, strlen(buf));
 	sprint(buf, "scroll");
 	fswrite(ctlfd, buf, strlen(buf));
 

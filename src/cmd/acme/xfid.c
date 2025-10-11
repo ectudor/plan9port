@@ -820,6 +820,10 @@ out:
 			wincleartag(w);
 			settag = TRUE;
 			m = 8;
+		}else
+		if(strncmp(p, "scratchwindow", 13) == 0){ /* flag window as scratch */
+			w->isscratch = TRUE;
+			m = 13;
 		}else{
 			err = Ebadctl;
 			break;
