@@ -480,6 +480,7 @@ winsettag1(Window *w)
 	static Rune Lput[] = { ' ', 'P', 'u', 't', 0 };
 	static Rune Llook[] = { ' ', 'L', 'o', 'o', 'k', ' ', 0 };
 	static Rune Lpipe[] = { ' ', '|', 0 };
+	static Rune LClear[] = { ' ', 'C', 'l', 'e', 'a', 'r', ' ', 0 };
 
 	/* there are races that get us here with stuff in the tag cache, so we take extra care to sync it */
 	if(w->tag.ncache!=0 || w->tag.file->mod)
@@ -534,6 +535,10 @@ winsettag1(Window *w)
 			i += 6;
 		}
 #endif
+		if(w->isscratch) {
+			runemove(new+i, LClear, 7);
+			i += 7;
+		}
 	}
 	new[i] = 0;
 

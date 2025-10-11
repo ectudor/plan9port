@@ -775,13 +775,17 @@ texttype(Text *t, Rune r)
 		undo(t, nil, nil, FALSE, 0, nil, 0);
 		return;
 	case 0x13: // C-s: save window
-		// good combination with -b flag
-		wincommit(t->w, &t->w->body);
-		put(&t->w->body, nil, nil, XXX, XXX, nil, 0);
+		//if (!t->file->name) {
+		if (!t->w->isdir && !t->w->isscratch) {
+			wincommit(t->w, &t->w->body);
+			put(&t->w->body, nil, nil, XXX, XXX, nil, 0);
+		}
 		return;
 	case 0x12: // C-r: get window
-		wincommit(t->w, &t->w->body);
-		get(&t->w->body, nil, nil, FALSE, XXX, nil, 0);
+		if (!t->w->isscratch) {
+			wincommit(t->w, &t->w->body);
+			get(&t->w->body, nil, nil, FALSE, XXX, nil, 0);
+		}
 		return;
 
 	Tagdown:
