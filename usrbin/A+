@@ -1,0 +1,15 @@
+#!/usr/local/plan9/bin/rc
+
+sed 's/^/	/g'
+
+#
+
+
+
+
+
+
+
+
+
+

@@ -386,7 +386,7 @@ winsetname(Window *w, Rune *name, int n)
 		return;
 	w->isscratch = FALSE;
 	if(n>=6 && runeeq(Lslashguide, 6, name+(n-6), 6))
-		w->isscratch = TRUE;
+		w->isscratch = FALSE; // i think this concept does not exist in plan9port
 	else if(n>=7 && runeeq(Lpluserrors, 7, name+(n-7), 7))
 		w->isscratch = TRUE;
 	filesetname(t->file, name, n);
