@@ -7,8 +7,8 @@ export tabstop=4
 export TERM=dumb
 export PAGER=cat
 export BROWSER=xdg-open
-export font=/mnt/font/GoMono/11a/font
 export PATH="$PATH:$PLAN9/usrbin:$PLAN9/bin"
+export font=/mnt/font/GoMono/11a/font
 
 if [ "$(pgrep -x plumber)"  ];  then
 	echo "Plumber is already running"

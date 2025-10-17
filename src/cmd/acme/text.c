@@ -782,7 +782,7 @@ texttype(Text *t, Rune r)
 		}
 		return;
 	case 0x12: // C-r: get window
-		if (!t->w->isscratch) {
+		if (t->w && !t->w->isscratch) {
 			wincommit(t->w, &t->w->body);
 			get(&t->w->body, nil, nil, FALSE, XXX, nil, 0);
 		}
