@@ -303,3 +303,4 @@ langs/**
 !langs/install_langs
 bin/go
 bin/gofmt
+bin/python

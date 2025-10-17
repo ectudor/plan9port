@@ -3,12 +3,17 @@
 if [[ -z $PLAN9 ]]; then
 	echo "Execute in a PLAN9 environment"
 else
-	# TODO: Actually download go instead
+	# TODO: Actually download things directly instead or from Dropbox
 	LANG_DIR_GO=$PLAN9/langs/go
 	if [ -d $LANG_DIR_GO ]; then
 		ln -sfn $LANG_DIR_GO/bin/go $PLAN9/bin/go
 		ln -sfn $LANG_DIR_GO/bin/gofmt $PLAN9/bin/gofmt
 		go env -w GOPATH=$HOME/.cache/go
+	fi
+
+	LANG_DIR_PYTHON=$PLAN9/langs/python
+	if [ -d $LANG_DIR_PYTHON ]; then
+		ln -sfn $LANG_DIR_PYTHON/bin/python $PLAN/bin/python
 	fi
 fi
 
