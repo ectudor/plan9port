@@ -8,9 +8,8 @@ export TERM=dumb
 export PAGER=cat
 export BROWSER=xdg-open
 export PATH="$PATH:$PLAN9/usrbin:$PLAN9/bin"
-export font=/mnt/font/GoMono/11a/font
+export font=/mnt/font/GoMono/10a/font
 export EDITOR=E
-
 
 if [ "$(pgrep -x plumber)"  ];  then
 	echo "Plumber is already running"
@@ -20,5 +19,7 @@ else
 fi
 
 
-$PLAN9/bin/acme -abf $font &
+$PLAN9/bin/acme -af $font &
 
+
+# use -b to preseve area of typing when clicked but  it's annoying sometimes
