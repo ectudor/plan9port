@@ -179,7 +179,7 @@ if $doinstall; then
 	# symlink Desktop file in user
 	sudo ln -sfn $plan9source /usr/local/plan9
 	ln -sfn $plan9source/dist/Acme.desktop $HOME/.local/share/applications/Acme.desktop
-
+	$PLAN9/langs/install_langs
 fi
 ) 2>&1 | tee install.log | $awk -f $PLAN9/dist/isum.awk -v 'copy='install.sum
 
