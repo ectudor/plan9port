@@ -1,0 +1,3 @@
+[submodule "plan9-personal"]
+	path = plan9-personal
+	url = /home/eduard/Dropbox/git/plan9-personal.git

@@ -159,14 +159,14 @@ textcolumnate(Text *t, Dirlist **dlp, int ndl)
 		if(w > colw)
 			colw = w;
 	}
-#if 0
+#if 1
 	if(colw == 0)
 		ncol = 1;
 	else
 		ncol = max(1, Dx(t->fr.r)/colw);
 #else
+	// TODO(Eduard): make this a command
 	ncol = 1;
-
 #endif
 	nrow = (ndl+ncol-1)/ncol;
 	q1 = 0;
