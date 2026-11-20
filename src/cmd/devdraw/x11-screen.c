@@ -798,9 +798,9 @@ xattach(Client *client, char *label, char *winsize)
 	}
 
 	if (client->displaydpi >= DefaultDPI*3/2)
-		_xsetcursor2((Xwin*)client->view, nil);
+		_xsetcursor2(w, nil);
 	else
-		_xsetcursor((Xwin*)client->view, nil);
+		_xsetcursor(w, nil);
 
 	return w->screenimage;
 }
