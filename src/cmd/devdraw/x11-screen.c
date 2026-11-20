@@ -385,7 +385,7 @@ runxevent(XEvent *xev)
 	int shift;
 	switch(xev->type){
 	case MapNotify:
-	case FocusIn:    
+	case FocusIn:
 	case Expose:     /* Handle standard Expose here too for consistency */
 			/*
 			 * Force a copy from backing store (screenpm) to the window.
@@ -607,7 +607,7 @@ xattach(Client *client, char *label, char *winsize)
 
 		if (XrmGetResource(database, "Xft.dpi", "String", &dpitype, &dpires) == True) {
 			if (dpires.addr) {
-				client->displaydpi = atoi(dpires.addr);
+				client->displaydpi = (atoi(dpires.addr) / 96) * 100;
 			}
 		}
 		geom = smprint("%s.geometry", label);
